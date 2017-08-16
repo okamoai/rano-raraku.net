@@ -1,0 +1,15 @@
+publishDir = "../public_html"
+baseurl = "https://rano-raraku.net/"
+title = "ラノララク"
+
+[permalinks]
+  post = "/:year:month/:slug/"
+
+[params]
+  author  = "okamoai"
+  email   = "okamoai@rano-raraku.net"
+  twitter = "https://twitter.com/okamoai"
+  github  = "https://github.com/okamoai"
+  qiita   = "https://qiita.com/okamoai"
+  analytics = "UA-71338376-1"
+  description = "Web制作という仕事が少しでもラクになることを目指すブログ"

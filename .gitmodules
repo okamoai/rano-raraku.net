@@ -1,0 +1,6 @@
+[submodule "static/password-generator"]
+	path = static/password-generator
+	url = https://github.com/okamoai/password-generator.git
+[submodule "static/qrcode-generator"]
+	path = static/qrcode-generator
+	url = https://github.com/okamoai/qrcode-generator
