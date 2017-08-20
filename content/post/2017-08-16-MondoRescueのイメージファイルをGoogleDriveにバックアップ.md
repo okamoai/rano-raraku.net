@@ -52,13 +52,14 @@ readonly BACKUP_BASENAME=vps-backup
 readonly PASSWORD=*******
 readonly KEEP_DAYS=4
 
-GDRIVE_DIR_ID=$(drive list --noheader --query "mimeType='application/vnd.google-apps.folder' and title='$BACKUP_BASENAME'" | awk '{print $1}')
+GDRIVE_DIR_ID=$(/usr/sbin/drive list --noheader --query "mimeType='application/vnd.google-apps.folder' and title='$BACKUP_BASENAME'" | awk '{print $1}')
 
-# ディレクトリ作成
-if [ ! -e $BACKUP_DIR ]
+# ディレクトリ初期化
+if [ -e $BACKUP_DIR ]
 then
-    mkdir $BACKUP_DIR
+  rm -rf $BACKUP_DIR
 fi
+mkdir $BACKUP_DIR
 
 # サーババックアップ
 /usr/sbin/mondoarchive -O -i -N -d $BACKUP_DIR -s 30g -p $BACKUP_BASENAME
