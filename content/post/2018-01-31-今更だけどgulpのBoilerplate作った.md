@@ -1,6 +1,6 @@
 ---
 Title: "今更だけど gulp の Boilerplate 作った"
-Date: "2019-01-31"
+Date: "2018-01-31"
 slug: "gulp-boilerplate"
 categories:
   - "gulp"
