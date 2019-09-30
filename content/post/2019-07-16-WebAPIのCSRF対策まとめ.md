@@ -7,8 +7,6 @@ categories:
   - "csrf"
 ---
 
-## まえがき
-
 セキュリティ脆弱性診断などでたまに CSRF について指摘されることがあります。
 今まではトークン発行して対応すれば良いんでしょ？ と思ってましたが、SPA のように非同期通信が前提の場合はどう対処するべきなんだろう、と疑問が出たりしたので、調べてみた結果をまとめてみました。
 
@@ -149,9 +147,28 @@ https://github.com/okamoai/example-csrf
 
 トークンによる対策は SPA のプロジェクトにも適用はできますが、プリフライトリクエストで対応した方がフロントエンド、バックエンド共に対応コストが少なくて良さそうですね。
 
+## Cookie の SameSite オプション【2019.09.12 追記】
+
+Cookie には `SameSite` というオプションがあり、このオプションに `Lax` が指定されると、Cookie の `domain` オプションに指定されたドメイン以外からの Form POST/img/iframe/Ajax のリクエストについて Cookie を送信しなくなります。  
+つまり外部サイトが CSRF 攻撃を行っても 対象の API には 認証情報の Cookie が送信されなくなるため、CSRF が成立しなくなります。
+
+SameSite の対応状況  
+https://caniuse.com/#search=samesite
+
+Win10 以外の IE11 と Android4.4 の標準ブラウザを除きモダンブラウザは対応済みなため、実用性は十分。  
+API のリクエストが Cookie の `domain` オプションの範囲に限定されるケースに限っては認証 Cookie に `SameSite=Lax` オプションを指定して CSRF 対策するのが最も低コストになります。
+
+逆に API リクエストがクロスドメイン前提である場合は、前述のプリフライトリクエストによる CSRF 対策を行う必要があります。  
+Chrome 80 からは `SameSite=Lax` が Cookie 生成時のデフォルトの値になるため、クロスドメインでの Cookie 送信が必要な場合は Cookie 生成時に明示的に `SameSite=None` を指定する必要があります。  
+また、 `SameSite=None` 指定時には `secure` オプションも同時に有効にしないと適用されないため、注意が必要です。
+
 ## 参考
 
 - [この Web API って CSRF 対策出来てますか？って質問にこたえよう](https://qiita.com/maruloop/items/e14d02299bd136f4b1fc)
 - [独自ヘッダをチェックするだけのステートレスな CSRF 対策は有効なのか？](http://blog.a-way-out.net/blog/2015/03/23/stateless-csrf-protection/)
 - [WebAPI のステートレスな CSRF 対策](https://momijiame.hatenadiary.org/entry/20111204/1323000833)
 - [XMLHttpRequest を使った CSRF 対策](http://hasegawa.hatenablog.com/entry/20130302/p1)
+- [Cookie の性質を利用した攻撃と Same Site Cookie の効果](https://blog.jxck.io/entries/2018-10-26/same-site-cookie.html)
+- [Cookies default to SameSite=Lax](https://www.chromestatus.com/feature/5088147346030592)
+- [Reject insecure SameSite=None cookies
+  ](https://www.chromestatus.com/feature/5633521622188032)
