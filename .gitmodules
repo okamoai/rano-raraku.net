@@ -4,3 +4,6 @@
 [submodule "static/qrcode-generator"]
 	path = static/qrcode-generator
 	url = https://github.com/okamoai/qrcode-generator
+[submodule "static/lit-element-es5"]
+	path = static/lit-element-es5
+	url = https://github.com/okamoai/lit-element-es5.git
